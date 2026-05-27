@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ل فرح 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #c8657a;
+    --rose-light: #f5d6de;
+    --rose-dark: #8b3a4a;
+    --gold: #c9a96e;
+    --cream: #fdf8f4;
+    --text: #2d1f1f;
+    --text-soft: #7a5c5c;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  /* ── AUTOPLAY OVERLAY ── */
+  #autoplay-overlay {
+    position: fixed; inset: 0;
+    background: rgba(45,31,31,0.96);
+    z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    transition: opacity 0.8s ease;
+  }
+  #autoplay-overlay .ov-flower { font-size: 4rem; animation: bloom 2s ease-in-out infinite; }
+  #autoplay-overlay h2 {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: white;
+    font-weight: 400;
+  }
+  #autoplay-overlay p {
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.5);
+  }
+  #autoplay-overlay .enter-btn {
+    margin-top: 1rem;
+    background: var(--rose);
+    color: white;
+    border: none;
+    padding: 0.9rem 2.8rem;
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    animation: pulse-btn 2s ease-in-out infinite;
+  }
+  @keyframes pulse-btn {
+    0%,100% { box-shadow: 0 0 0 0 rgba(200,101,122,0.5); }
+    50% { box-shadow: 0 0 0 16px rgba(200,101,122,0); }
+  }
+  #autoplay-overlay .enter-btn:hover { background: var(--rose-dark); transform: scale(1.04); }
+  #autoplay-overlay.hidden { opacity: 0; pointer-events: none; }
+
+  /* ── PETALS ── */
+  .petal-field {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .petal {
+    position: absolute; top: -60px;
+    width: 12px; height: 18px;
+    background: var(--rose-light);
+    border-radius: 70% 30% 70% 30% / 30% 70% 30% 70%;
+    opacity: 0.7;
+    animation: fall linear infinite;
+  }
+  .petal:nth-child(odd) { background: #f7c5cf; }
+  .petal:nth-child(3n) { background: #fad7df; width: 9px; height: 14px; }
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.8; }
+    50% { transform: translateY(50vh) rotate(180deg) translateX(30px); opacity: 0.6; }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: radial-gradient(ellipse at 60% 30%, #ffe4ec 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, #fce8d5 0%, transparent 50%),
+                var(--cream);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8657a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-date {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--rose);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 1s ease forwards;
+    opacity: 0;
+    animation-delay: 0.2s;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 300;
+  }
+  .hero-to {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-style: italic;
+    color: var(--text-soft);
+    animation: fadeUp 1s ease forwards;
+    opacity: 0;
+    animation-delay: 0.4s;
+  }
+  .hero-name {
+    font-family: 'Amiri', serif;
+    font-size: clamp(5rem, 16vw, 10rem);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--text);
+    animation: fadeUp 1s ease forwards;
+    opacity: 0;
+    animation-delay: 0.6s;
+    margin: 0.2rem 0;
+  }
+  .hero-name span { color: var(--rose); font-style: italic; }
+
+  .hero-flower {
+    font-size: 2.5rem;
+    margin: 1.5rem 0;
+    animation: fadeUp 1s ease forwards, bloom 3s ease-in-out infinite;
+    opacity: 0;
+    animation-delay: 0.8s, 1.8s;
+  }
+  @keyframes bloom {
+    0%, 100% { transform: scale(1) rotate(-5deg); }
+    50% { transform: scale(1.15) rotate(5deg); }
+  }
+  .hero-tagline {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--text-soft);
+    max-width: 520px;
+    line-height: 1.8;
+    animation: fadeUp 1s ease forwards;
+    opacity: 0;
+    animation-delay: 1s;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--rose);
+    font-family: 'Cairo', sans-serif;
+    animation: bounce 2s ease-in-out infinite, fadeUp 1s ease forwards;
+    opacity: 0;
+    animation-delay: 0s, 1.5s;
+  }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    position: absolute; top: 50%;
+    width: 35%; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .divider::before { left: 5%; }
+  .divider::after { right: 5%; background: linear-gradient(to left, transparent, var(--gold)); }
+  .divider-icon { color: var(--gold); font-size: 1.2rem; }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative; z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--rose);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+  }
+  .section-label::before {
+    content: '';
+    flex: 1; height: 1px;
+    background: linear-gradient(to left, var(--rose-light), transparent);
+  }
+
+  .longing-wrap {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  .longing-word {
+    font-family: 'Amiri', serif;
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 700;
+    color: var(--rose-dark);
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    position: relative;
+    display: inline-block;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  .longing-word::after {
+    content: 'اشتقتلك';
+    position: absolute; inset: 0;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--rose-light);
+    transform: translate(4px, 4px);
+    z-index: -1;
+  }
+  @keyframes glowPulse {
+    0%, 100% { text-shadow: 0 0 40px rgba(200,101,122,0.2); }
+    50% { text-shadow: 0 0 80px rgba(200,101,122,0.45); }
+  }
+  .longing-sub {
+    font-size: 2.5rem;
+    margin-top: 1.5rem;
+    animation: bloom 3s ease-in-out infinite;
+  }
+  .letter-card {
+    background: white;
+    border: 1px solid var(--rose-light);
+    border-radius: 2px;
+    padding: 3rem 3.5rem;
+    box-shadow: -8px 8px 0 var(--rose-light), 0 20px 60px rgba(200,101,122,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .letter-card p {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+    font-weight: 400;
+    line-height: 2.2;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .letter-card p:last-child { margin-bottom: 0; }
+  .letter-signature {
+    margin-top: 2.5rem;
+    font-family: 'Amiri', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--rose-dark);
+    text-align: left;
+    border-top: 1px solid var(--rose-light);
+    padding-top: 1.5rem;
+  }
+
+  /* ── MUSIC ── */
+  .music-section { text-align: center; }
+  .player-card {
+    background: linear-gradient(135deg, #2d1f1f 0%, #4a2c2c 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(139,58,74,0.3);
+  }
+  .player-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(200,101,122,0.3), transparent 60%);
+  }
+  .vinyl {
+    width: 130px; height: 130px;
+    margin: 0 auto 2rem;
+    animation: spin 8s linear infinite paused;
+  }
+  .vinyl.playing { animation-play-state: running; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .vinyl-disc {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #1a1a1a 0deg, #2a2a2a 30deg, #1a1a1a 60deg, #2a2a2a 90deg,
+      #1a1a1a 120deg, #2a2a2a 150deg, #1a1a1a 180deg, #2a2a2a 210deg,
+      #1a1a1a 240deg, #2a2a2a 270deg, #1a1a1a 300deg, #2a2a2a 330deg, #1a1a1a 360deg
+    );
+    border: 2px solid #333;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vinyl-label {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: white;
+  }
+  .song-title {
+    font-family: 'Amiri', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+    position: relative; z-index: 1;
+  }
+  .song-artist {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2rem;
+    position: relative; z-index: 1;
+    font-family: 'Cairo', sans-serif;
+  }
+  .audio-player {
+    width: 100%;
+    position: relative; z-index: 1;
+    margin-bottom: 1.5rem;
+  }
+  audio {
+    width: 100%;
+    filter: invert(1) sepia(1) saturate(1) hue-rotate(300deg);
+    border-radius: 50px;
+  }
+  .player-note {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    position: relative; z-index: 1;
+    font-family: 'Cairo', sans-serif;
+  }
+  .upload-btn {
+    margin-top: 1.2rem;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: transparent;
+    border: 1px solid var(--rose);
+    color: var(--rose);
+    padding: 0.7rem 1.8rem;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+    position: relative; z-index: 1;
+  }
+  .upload-btn:hover { background: var(--rose); color: white; }
+
+  /* ── GALLERY ── */
+  .gallery-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    margin-bottom: 2.5rem;
+    line-height: 1.4;
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .photo-frame {
+    position: relative; overflow: hidden;
+    background: var(--rose-light);
+    cursor: pointer; border-radius: 4px;
+  }
+  .photo-frame:nth-child(1) { grid-column: 1 / 3; grid-row: 1; aspect-ratio: 16/10; }
+  .photo-frame:nth-child(2) { grid-column: 3; grid-row: 1; aspect-ratio: 9/10; }
+  .photo-frame:nth-child(3) { grid-column: 1; grid-row: 2; aspect-ratio: 1; }
+  .photo-frame:nth-child(4) { grid-column: 2 / 4; grid-row: 2; aspect-ratio: 16/9; }
+  .photo-frame:nth-child(5) { grid-column: 1 / 4; grid-row: 3; aspect-ratio: 21/9; }
+  .photo-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.6s ease;
+  }
+  .photo-frame:hover img { transform: scale(1.05); }
+  .photo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(139,58,74,0.6), transparent);
+    opacity: 0; transition: opacity 0.4s ease;
+    display: flex; align-items: flex-end; padding: 1.2rem;
+  }
+  .photo-frame:hover .photo-overlay { opacity: 1; }
+  .photo-caption {
+    font-family: 'Amiri', serif;
+    font-style: italic;
+    color: white; font-size: 1.1rem;
+  }
+  .photo-placeholder {
+    width: 100%; height: 100%; min-height: 160px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, var(--rose-light), #fce8f0);
+    color: var(--rose);
+    font-size: 0.7rem;
+    font-family: 'Cairo', sans-serif;
+  }
+  .photo-placeholder .plus { font-size: 1.8rem; font-weight: 200; color: var(--rose); }
+
+  /* ── MEMORIES ── */
+  .memories-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; margin-top: 1rem;
+  }
+  .memory-card {
+    background: white;
+    border: 1px solid var(--rose-light);
+    border-radius: 4px; padding: 1.8rem;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .memory-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(200,101,122,0.12);
+  }
+  .memory-num {
+    font-family: 'Amiri', serif;
+    font-size: 3.5rem; font-weight: 400;
+    color: var(--rose-light); line-height: 1; margin-bottom: 0.5rem;
+  }
+  .memory-text {
+    font-family: 'Amiri', serif;
+    font-size: 1.15rem; font-weight: 400;
+    color: var(--text-soft); line-height: 1.9;
+  }
+  .memory-icon {
+    position: absolute; top: 1.5rem; left: 1.5rem;
+    font-size: 1.2rem; opacity: 0.4;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    text-align: center;
+    padding: 6rem 2rem;
+    background: linear-gradient(to bottom, var(--cream), #ffe8ef);
+    position: relative; z-index: 1;
+  }
+  .heart-big {
+    font-size: 4rem; display: block; margin-bottom: 1.5rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+  }
+  .closing-text {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400; line-height: 1.5;
+    color: var(--text); max-width: 620px;
+    margin: 0 auto 2rem;
+  }
+  .closing-text em { color: var(--rose); font-style: italic; }
+  .closing-sub {
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    color: var(--text-soft); font-family: 'Cairo', sans-serif;
+  }
+
+  @media (max-width: 580px) {
+    .letter-card { padding: 2rem 1.5rem; }
+    .photo-grid { grid-template-columns: 1fr 1fr; }
+    .photo-frame:nth-child(1) { grid-column: 1 / 3; }
+    .photo-frame:nth-child(2) { grid-column: 1; }
+    .photo-frame:nth-child(3) { grid-column: 2; }
+    .photo-frame:nth-child(4) { grid-column: 1 / 3; }
+    .memories-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── AUTOPLAY OVERLAY ── -->
+<div id="autoplay-overlay">
+  <div class="ov-flower">🌸</div>
+  <h2>ل فرح ... بكل المحبة</h2>
+  <p>اضغطي لتدخلي</p>
+  <button class="enter-btn" onclick="enterSite()">✦ &nbsp; ادخلي &nbsp; ✦</button>
+</div>
+
+<!-- Falling Petals -->
+<div class="petal-field" id="petals"></div>
+
+<!-- Hidden audio element -->
+<audio id="audio-el" loop>
+  <source src="song2.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-date" id="hero-date"></div>
+  <p class="hero-to">إلى الشخص الذي يملأ القلب ...</p>
+  <h1 class="hero-name">ف<span>ر</span>ح</h1>
+  <div class="hero-flower">🌸</div>
+  <p class="hero-tagline">بعض الأشياء أكبر من أن تُقال في رسالة، وأصدق من أن تبقى بلا كلام.</p>
+  <div class="scroll-hint">↓ &nbsp;  للأسفل &nbsp; ↓</div>
+</div>
+
+<!-- ── LETTER ── -->
+<div class="divider"><span class="divider-icon">✦</span></div>
+
+<section>
+  <div class="longing-wrap">
+    <p class="longing-word">اشتقتلك</p>
+    <p class="longing-sub">🌸</p>
+  </div>
+</section>
+
+<!-- ── MUSIC ── -->
+<div class="divider"><span class="divider-icon">♪</span></div>
+
+<section class="music-section">
+  <div class="section-label">أغنية ذكّرتني بكِ</div>
+
+  <div class="player-card">
+    <div class="vinyl" id="vinyl">
+      <div class="vinyl-disc">
+        <div class="vinyl-label">♪</div>
+      </div>
+    </div>
+
+    <div class="song-title" id="song-title">أغنيتك المميزة</div>
+
+
+    <button id="play-btn" onclick="togglePlay()" style="
+      margin-top: 1rem;
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--rose);
+      border: none;
+      cursor: pointer;
+      font-size: 1.6rem;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: auto; margin-right: auto;
+      position: relative; z-index: 1;
+      transition: transform 0.2s, background 0.2s;
+    ">▶</button>
+
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<div class="divider"><span class="divider-icon">✦</span></div>
+
+<section>
+
+  <div class="photo-grid" id="photo-grid">
+    <div class="photo-frame">
+      <img src="pic8.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+    </div>
+    <div class="photo-frame">
+      <img src="pic2.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+    </div>
+    <div class="photo-frame">
+      <img src="pic3.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+    </div>
+    <div class="photo-frame">
+      <img src="pic4.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+    </div>
+    <div class="photo-frame">
+      <img src="pic5.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+    </div>
+  </div>
+
+  <input type="file" id="photo-input" accept="image/*" style="display:none">
+</section>
+
+<!-- ── CLOSING ── -->
+<div class="closing">
+  <span class="heart-big">❤️</span>
+  <div class="closing-text">
+    المسافة لا تعني شيئاً حين يكون الشخص <em>يعني كل شيء.</em>
+  </div>
+  <div class="closing-sub">من ابراهيم &nbsp;·&nbsp;  &nbsp;·&nbsp; 🌸</div>
+</div>
+
+<script>
+  // Arabic date
+  const d = new Date();
+  document.getElementById('hero-date').textContent =
+    d.toLocaleDateString('ar-EG', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // Petals
+  const field = document.getElementById('petals');
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (7 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 12) + 's';
+    p.style.transform = `rotate(${Math.random()*360}deg)`;
+    field.appendChild(p);
+  }
+
+  const audioMain = document.getElementById('audio-el');
+  const vinyl = document.getElementById('vinyl');
+  const playBtn = document.getElementById('play-btn');
+
+  function togglePlay() {
+    if (audioMain.paused) {
+      audioMain.play();
+    } else {
+      audioMain.pause();
+    }
+  }
+
+  audioMain.addEventListener('play', () => {
+    vinyl.classList.add('playing');
+    playBtn.textContent = '⏸';
+  });
+  audioMain.addEventListener('pause', () => {
+    vinyl.classList.remove('playing');
+    playBtn.textContent = '▶';
+  });
+  audioMain.addEventListener('ended', () => {
+    vinyl.classList.remove('playing');
+    playBtn.textContent = '▶';
+  });
+
+  // Enter site — autoplay music
+  function enterSite() {
+    const overlay = document.getElementById('autoplay-overlay');
+    overlay.classList.add('hidden');
+    setTimeout(() => { overlay.style.display = 'none'; }, 800);
+    audioMain.play().catch(() => {});
+  }
+
+  // Song from file
+  document.getElementById('song-input').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      syncAudio(url);
+      document.getElementById('song-title').textContent = file.name.replace(/\.[^.]+$/, '');
+      document.getElementById('song-artist').textContent = 'أغنيتك المميزة 🎵';
+      // Try autoplay immediately if overlay already dismissed
+      const overlay = document.getElementById('autoplay-overlay');
+      if (overlay.style.display === 'none') {
+        audioMain.play().catch(() => {});
+      }
+    }
+  });
+
+  // Song from URL
+  function loadSongUrl(val) {
+    if (val.length > 10) {
+      syncAudio(val);
+      const overlay = document.getElementById('autoplay-overlay');
+      if (overlay.style.display === 'none') {
+        audioMain.play().catch(() => {});
+      }
+    }
+  }
+
+  // Photo upload
+  let currentSlot = 0;
+  document.getElementById('photo-input').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const ph = document.getElementById('ph' + currentSlot);
+    const frame = ph.parentElement;
+    ph.style.display = 'none';
+    let img = frame.querySelector('img');
+    if (!img) {
+      img = document.createElement('img');
+      frame.insertBefore(img, frame.firstChild);
+    }
+    img.src = url;
+    img.style.position = 'absolute';
+    img.style.inset = '0';
+    this.value = '';
+  });
+
+  function triggerUpload(slot) {
+    currentSlot = slot;
+    document.getElementById('photo-input').click();
+  }
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.memory-card, .photo-frame, .letter-card, .player-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
