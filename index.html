@@ -112,16 +112,30 @@
   }
 
   .hero-date {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    color: var(--rose);
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.1rem, 3vw, 1.45rem);
+    letter-spacing: 0;
+    color: var(--rose-dark);
     margin-bottom: 1.5rem;
     animation: fadeUp 1s ease forwards;
     opacity: 0;
     animation-delay: 0.2s;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 300;
+    font-weight: 400;
+    position: relative;
+    padding: 0 2rem;
   }
+  .hero-date::before,
+  .hero-date::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 0.8rem;
+  }
+  .hero-date::before { right: 0; }
+  .hero-date::after { left: 0; }
+  
   .hero-to {
     font-family: 'Amiri', serif;
     font-size: clamp(1rem, 3vw, 1.4rem);
@@ -388,20 +402,22 @@
   }
   .photo-frame {
     position: relative; overflow: hidden;
-    background: var(--rose-light);
+    background: #fff;
+    border: 1px solid var(--rose-light);
+    padding: 0.45rem;
     cursor: pointer; border-radius: 4px;
   }
-  .photo-frame:nth-child(1) { grid-column: 1 / 3; grid-row: 1; aspect-ratio: 16/10; }
-  .photo-frame:nth-child(2) { grid-column: 3; grid-row: 1; aspect-ratio: 9/10; }
-  .photo-frame:nth-child(3) { grid-column: 1; grid-row: 2; aspect-ratio: 1; }
-  .photo-frame:nth-child(4) { grid-column: 2 / 4; grid-row: 2; aspect-ratio: 16/9; }
-  .photo-frame:nth-child(5) { grid-column: 1 / 4; grid-row: 3; aspect-ratio: 21/9; }
+  .photo-frame:nth-child(1) { grid-column: 1 / 3; grid-row: 1; aspect-ratio: 480/468; }
+  .photo-frame:nth-child(2) { grid-column: 3; grid-row: 1; aspect-ratio: 634/860; }
+  .photo-frame:nth-child(3) { grid-column: 1; grid-row: 2; aspect-ratio: 491/668; }
+  .photo-frame:nth-child(4) { grid-column: 2 / 4; grid-row: 2; aspect-ratio: 490/597; }
+  .photo-frame:nth-child(5) { grid-column: 1 / 4; grid-row: 3; aspect-ratio: 470/325; }
   .photo-frame img {
     width: 100%; height: 100%;
-    object-fit: cover; display: block;
+    object-fit: contain; display: block;
     transition: transform 0.6s ease;
   }
-  .photo-frame:hover img { transform: scale(1.05); }
+  .photo-frame:hover img { transform: none; }
   .photo-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(139,58,74,0.6), transparent);
@@ -425,6 +441,43 @@
     font-family: 'Cairo', sans-serif;
   }
   .photo-placeholder .plus { font-size: 1.8rem; font-weight: 200; color: var(--rose); }
+
+  .mobile-story {
+    display: none;
+  }
+  .story-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 400;
+    color: var(--rose-dark);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .story-list {
+    display: grid;
+    gap: 1.2rem;
+  }
+  .story-photo {
+    background: white;
+    border: 1px solid var(--rose-light);
+    border-radius: 4px;
+    padding: 0.55rem;
+    box-shadow: 0 12px 30px rgba(200,101,122,0.1);
+  }
+  .story-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+  .story-caption {
+    font-family: 'Amiri', serif;
+    font-size: 1.08rem;
+    color: var(--text-soft);
+    line-height: 1.8;
+    text-align: center;
+    padding: 0.85rem 0.35rem 0.2rem;
+  }
 
   /* ── MEMORIES ── */
   .memories-row {
@@ -487,14 +540,52 @@
     font-size: 0.75rem; letter-spacing: 0.2em;
     color: var(--text-soft); font-family: 'Cairo', sans-serif;
   }
+  .final-reveal-btn {
+    margin: 0 auto 1.4rem;
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.85rem 2.2rem;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(200,101,122,0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .final-reveal-btn:hover {
+    background: var(--rose-dark);
+    transform: translateY(-2px);
+  }
+  .final-message {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.3rem, 4vw, 1.75rem);
+    color: var(--rose-dark);
+    line-height: 1.8;
+    transition: max-height 0.7s ease, opacity 0.7s ease, margin 0.7s ease;
+  }
+  .final-message.visible {
+    max-height: 160px;
+    opacity: 1;
+    margin: 0 auto 1.6rem;
+  }
 
   @media (max-width: 580px) {
     .letter-card { padding: 2rem 1.5rem; }
     .photo-grid { grid-template-columns: 1fr 1fr; }
-    .photo-frame:nth-child(1) { grid-column: 1 / 3; }
-    .photo-frame:nth-child(2) { grid-column: 1; }
-    .photo-frame:nth-child(3) { grid-column: 2; }
-    .photo-frame:nth-child(4) { grid-column: 1 / 3; }
+    .photo-frame:nth-child(1) { grid-column: 1 / 3; grid-row: auto; }
+    .photo-frame:nth-child(2) { grid-column: 1; grid-row: auto; }
+    .photo-frame:nth-child(3) { grid-column: 2; grid-row: auto; }
+    .photo-frame:nth-child(4) { grid-column: 1 / 3; grid-row: auto; }
+    .photo-frame:nth-child(5) { grid-column: 1 / 3; grid-row: auto; }
+    .mobile-story {
+      display: block;
+      padding-top: 1rem;
+    }
     .memories-row { grid-template-columns: 1fr; }
   }
 </style>
@@ -514,12 +605,12 @@
 
 <!-- Hidden audio element -->
 <audio id="audio-el" loop>
-  <source src="song2.mp3" type="audio/mpeg">
+  <source src="song 3 new.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ── HERO ── -->
 <div class="hero">
-  <div class="hero-date" id="hero-date"></div>
+  <div class="hero-date" id="hero-date">&#1604;&#1571;&#1606;&#1603;&#1616; &#1571;&#1580;&#1605;&#1604; &#1589;&#1583;&#1601;&#1577; &#1608;&#1571;&#1581;&#1606;&#1617; &#1581;&#1603;&#1575;&#1610;&#1577;</div>
   <p class="hero-to">إلى الشخص الذي يملأ القلب ...</p>
   <h1 class="hero-name">ف<span>ر</span>ح</h1>
   <div class="hero-flower">🌸</div>
@@ -578,23 +669,41 @@
 
   <div class="photo-grid" id="photo-grid">
     <div class="photo-frame">
-      <img src="pic8.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+      <img src="pic8.png">
     </div>
     <div class="photo-frame">
-      <img src="pic2.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+      <img src="pic2.png">
     </div>
     <div class="photo-frame">
-      <img src="pic3.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+      <img src="pic3.png">
     </div>
     <div class="photo-frame">
-      <img src="pic4.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+      <img src="pic4.png">
     </div>
     <div class="photo-frame">
-      <img src="pic5.png" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+      <img src="pic5.png">
     </div>
   </div>
 
   <input type="file" id="photo-input" accept="image/*" style="display:none">
+</section>
+
+<section class="mobile-story">
+  <div class="story-title">لازم تبعتيلي صور اكتر 😂  </div>
+  <div class="story-list">
+    <div class="story-photo">
+      <img src="pic1.png" alt="">
+      <p class="story-caption">كل صورة فيكِ لها شعور مختلف.</p>
+    </div>
+    <div class="story-photo">
+      <img src="pic 6.png" alt="">
+      <p class="story-caption">وفي كل مرة أراكِ، يصبح اليوم ألطف.</p>
+    </div>
+    <div class="story-photo">
+      <img src="pic 7.png" alt="">
+      <p class="story-caption">تبقين أجمل تفصيلة في الذاكرة.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ── CLOSING ── -->
@@ -603,15 +712,12 @@
   <div class="closing-text">
     المسافة لا تعني شيئاً حين يكون الشخص <em>يعني كل شيء.</em>
   </div>
+  <button class="final-reveal-btn" type="button" onclick="revealFinalMessage()">اضغطي هنا</button>
+  <div class="final-message" id="final-message">ابتسمي اليوم، لأن ابتسامتكِ وحدها تجعل العالم أهدأ وأجمل.</div>
   <div class="closing-sub">من ابراهيم &nbsp;·&nbsp;  &nbsp;·&nbsp; 🌸</div>
 </div>
 
 <script>
-  // Arabic date
-  const d = new Date();
-  document.getElementById('hero-date').textContent =
-    d.toLocaleDateString('ar-EG', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-
   // Petals
   const field = document.getElementById('petals');
   for (let i = 0; i < 22; i++) {
@@ -709,6 +815,10 @@
     document.getElementById('photo-input').click();
   }
 
+  function revealFinalMessage() {
+    document.getElementById('final-message').classList.add('visible');
+  }
+
   // Scroll fade-in
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -719,7 +829,7 @@
     });
   }, { threshold: 0.15 });
 
-  document.querySelectorAll('.memory-card, .photo-frame, .letter-card, .player-card').forEach(el => {
+  document.querySelectorAll('.memory-card, .photo-frame, .story-photo, .letter-card, .player-card').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
